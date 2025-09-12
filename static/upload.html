@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload New Article</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="CSS/main.CSS"> <!-- Your custom styles -->
+    <link rel="icon" type="image/x-icon" href="/static/IMAGES/icon.ico">
+
+</head>
+<header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center">
+            <div class="text-2xl font-bold text-[#A51C30]">
+                <a href="index.html" class="hover:text-[#8C8179]">Dragon Tales News</a>
+            </div>
+            <nav class="mt-4 sm:mt-0">
+                <ul class="flex space-x-6 text-[#1E1E1E] font-medium">
+                    <li><a href="#" class="hover:text-[#A51C30] transition-colors duration-200" hidden>Home</a></li>
+                    <li><a href="#" class="hover:text-[#A51C30] transition-colors duration-200" hidden>About Us</a></li>
+                    <li><a href="#" class="hover:text-[#A51C30] transition-colors duration-200" hidden>Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8 max-w-3xl">
+        <div class="flex justify-between items-center">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">Create New Article</h1>
+            <a href="/logout" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Logout</a>
+        </div>
+        <form id="article-form" class="bg-white p-8 rounded-lg shadow-md space-y-6">
+            <!-- Form fields are the same as before -->
+            <div>
+                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="title" name="title" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+             <div>
+                <label for="author" class="block text-sm font-medium text-gray-700">Author</label>
+                <input type="text" id="author" name="author" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                <input type="text" id="category" name="category" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                <input type="date" id="date" name="date" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="image" class="block text-sm font-medium text-gray-700">Image URL</label>
+                <input type="url" id="image" name="image" placeholder="https://example.com/image.jpg" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="summary" class="block text-sm font-medium text-gray-700">Summary</label>
+                <textarea id="summary" name="summary" rows="3" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+            </div>
+            <div>
+                <label for="fullDescription" class="block text-sm font-medium text-gray-700">Full Description</label>
+                <textarea id="fullDescription" name="fullDescription" rows="8" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+            </div>
+            <div class="flex items-center">
+                <input id="featured" name="featured" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <label for="featured" class="ml-2 block text-sm text-gray-900">Make this a featured article?</label>
+            </div>
+            <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700">
+                Submit Article
+            </button>
+        </form>
+
+        <!-- Area to display success or error messages from the server -->
+        <div id="status-message" class="mt-6 p-4 rounded-lg text-center font-semibold hidden"></div>
+    </div>
+    <script src="JS/upload.js"></script>
+</body>
+</html>
