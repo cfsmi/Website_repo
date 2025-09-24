@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="CSS/extras.css">
+    
+    <link rel="icon" href="IMAGES/icon.ico">
+</head>
+
+<body>
+    <div class="login-container">
+        <form id="login-form" class="login-form">
+            <h2>Article Uploader Login</h2>
+            
+            <div class="input-group">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+            </div>
+
+            <p id="error-message" class="error-message">Incorrect password. Please try again.</p>
+            
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+    <script>
+    window.onload = function() {
+    if(!window.location.hash) {
+        window.location = window.location + '#';
+        window.location.reload();
+    }
+    }
+    </script>
+    <script src="JS/login.js"></script>
+</body>
+</html>

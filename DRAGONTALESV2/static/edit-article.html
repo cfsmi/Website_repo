@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Article</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="IMAGES/icon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Using Inter font as the default */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen">
+    
+
+    <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Edit an Article</h1>
+            <p class="text-gray-500 mb-6">Enter the article page URL or ID to edit the article.</p>
+        </div>
+        
+        <!-- Form to handle the edit redirect -->
+        <form id="editForm">
+            <div class="mb-4">
+                <label for="articleInput" class="block text-sm font-medium text-gray-700 mb-2">Article URL or ID</label>
+                <input 
+                    type="text" 
+                    id="articleInput" 
+                    name="articleInput" 
+                    class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    placeholder="e.g., article.html?id=my-first-post-123 or my-first-post-123"
+                    required
+                >
+            </div>
+            
+            <button 
+                type="submit" 
+                id="editButton"
+                class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-transform transform hover:scale-105"
+            >
+                Go to Edit Page
+            </button>
+        </form>
+        
+        <!-- Status message area to show error feedback -->
+        <div id="statusMessage" class="mt-5 text-center text-sm font-medium" aria-live="polite"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editForm = document.getElementById('editForm');
+            const articleInput = document.getElementById('articleInput');
+            const statusMessage = document.getElementById('statusMessage');
+
+            editForm.addEventListener('submit', (event) => {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Get the input value
+                const input = articleInput.value.trim();
+
+                // Basic validation: ensure the input is not empty
+                if (!input) {
+                    displayMessage('Please enter an Article URL or ID.', 'error');
+                    return;
+                }
+
+                // Extract article ID from the input
+                let articleId = extractArticleId(input);
+
+                if (!articleId) {
+                    displayMessage('Invalid URL or ID format. Please check your input.', 'error');
+                    return;
+                }
+
+                // Redirect to edit page with the article ID
+                window.location.href = `edit.html?id=${encodeURIComponent(articleId)}`;
+            });
+            
+            // Helper function to extract article ID from URL or return the ID directly
+            function extractArticleId(input) {
+                // If input contains "article.html?id=", extract the ID
+                if (input.includes('article.html?id=')) {
+                    const urlParams = new URLSearchParams(input.split('?')[1]);
+                    return urlParams.get('id');
+                }
+                
+                // If input contains just "?id=", extract the ID
+                if (input.includes('?id=')) {
+                    const urlParams = new URLSearchParams(input.split('?')[1]);
+                    return urlParams.get('id');
+                }
+                
+                // If input looks like a URL with parameters, try to extract id parameter
+                if (input.includes('?')) {
+                    try {
+                        const url = new URL(input.startsWith('http') ? input : 'http://example.com/' + input);
+                        return url.searchParams.get('id');
+                    } catch (e) {
+                        // If URL parsing fails, treat as direct ID
+                        return input;
+                    }
+                }
+                
+                // Otherwise, assume it's a direct article ID
+                return input;
+            }
+            
+            // Helper function to display status messages
+            function displayMessage(message, type) {
+                statusMessage.textContent = message;
+                if (type === 'success') {
+                    statusMessage.className = 'mt-5 text-center text-sm font-medium text-green-600';
+                } else {
+                    statusMessage.className = 'mt-5 text-center text-sm font-medium text-red-600';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
