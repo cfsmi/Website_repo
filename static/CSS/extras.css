@@ -1,0 +1,163 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #6a5af9;
+    --secondary-color: #d15ab2;
+    --background-color: #12121c;
+    --card-background: rgba(255, 255, 255, 0.05);
+    --text-color: #f0f0f0;
+    --text-color-muted: #a0a0a0;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --error-color: #ff5555;
+    --glow-color: rgba(106, 90, 249, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background-color);
+    background-image: linear-gradient(135deg, var(--background-color) 0%, #1f1f32 100%);
+    color: var(--text-color);
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Prevents scrollbars from animation */
+}
+
+/* --- Login Container & Form --- */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+}
+
+.login-form h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+
+/* --- Input Group for Floating Label --- */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: var(--text-color-muted);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+/* Floating label animation */
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -8px;
+    left: 12px;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    background-color: #1a1a2b; /* Match card background to "cut out" the border */
+    padding: 0 5px;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+/* --- Button Styles --- */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-image: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background-size: 200%;
+    background-position: left;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+button:hover {
+    background-position: right;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Error Message --- */
+.error-message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    text-align: center;
+    height: 0;
+    opacity: 0;
+    margin-bottom: 1rem;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    overflow: hidden;
+}
+
+.error-message.show {
+    opacity: 1;
+    height: 20px; /* Adjust as needed */
+}
+
+
+/* --- Animations --- */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 480px) {
+    .login-container {
+        margin: 0 1rem;
+        padding: 1.5rem;
+    }
+    .login-form h2 {
+        font-size: 1.75rem;
+    }
+}

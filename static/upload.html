@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload New Article</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="CSS/main.CSS"> <!-- Your custom styles -->
-    <link rel="icon" type="image/x-icon" href="/static/IMAGES/icon.ico">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/main.CSS">
+    <link rel="icon" href="IMAGES/icon.ico">
 
 </head>
 <header class="bg-white shadow-sm">
         <div class="container mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center">
             <div class="text-2xl font-bold text-[#A51C30]">
-                <a href="index.html" class="hover:text-[#8C8179]">Dragon Tales News</a>
+                <a href="/" class="hover:text-[#8C8179]">Dragon Tales News</a>
             </div>
             <nav class="mt-4 sm:mt-0">
                 <ul class="flex space-x-6 text-[#1E1E1E] font-medium">
@@ -24,13 +26,15 @@
         </div>
     </header>
 <body class="bg-gray-100">
-    <div class="container mx-auto p-8 max-w-3xl">
-        <div class="flex justify-between items-center">
-            <h1 class="text-4xl font-bold text-gray-800 mb-6">Create New Article</h1>
-            <a href="/logout" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Logout</a>
+    <div class="container mx-auto p-4 sm:p-8 max-w-4xl">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
+            <h1 class="text-2xl sm:text-4xl font-bold text-gray-800">Create New Article</h1>
+            <div class="flex space-x-2">
+                <a href="/delete" class="px-3 sm:px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 text-sm sm:text-base">Manage Articles</a>
+                <a href="/logout" class="px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm sm:text-base">Logout</a>
+            </div>
         </div>
         <form id="article-form" class="bg-white p-8 rounded-lg shadow-md space-y-6">
-            <!-- Form fields are the same as before -->
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                 <input type="text" id="title" name="title" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
@@ -48,28 +52,64 @@
                 <input type="date" id="date" name="date" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
             </div>
             <div>
-                <label for="image" class="block text-sm font-medium text-gray-700">Image URL</label>
-                <input type="url" id="image" name="image" placeholder="https://example.com/image.jpg" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Article Image</label>
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                        <input type="file" id="image-file" accept="image/*" class="flex-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <button type="button" id="upload-image-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">Upload Image</button>
+                    </div>
+                    <div class="text-center text-gray-500 text-sm">OR</div>
+                    <input type="url" id="image" name="image" placeholder="https://example.com/image.jpg" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" novalidate>
+                    <div id="image-preview" class="hidden mt-2">
+                        <img id="preview-img" class="max-w-full h-48 object-cover rounded-lg shadow-md" alt="Preview">
+                    </div>
+                </div>
             </div>
             <div>
                 <label for="summary" class="block text-sm font-medium text-gray-700">Summary</label>
                 <textarea id="summary" name="summary" rows="3" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
             </div>
             <div>
-                <label for="fullDescription" class="block text-sm font-medium text-gray-700">Full Description</label>
-                <textarea id="fullDescription" name="fullDescription" rows="8" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                <label for="fullDescription" class="block text-sm font-medium text-gray-700 mb-2">Full Description</label>
+                <div id="editor" class="bg-white" style="height: 300px;"></div>
+                <textarea id="fullDescription" name="fullDescription" class="hidden"></textarea>
             </div>
             <div class="flex items-center">
                 <input id="featured" name="featured" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <label for="featured" class="ml-2 block text-sm text-gray-900">Make this a featured article?</label>
             </div>
-            <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700">
-                Submit Article
-            </button>
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                <button type="button" id="preview-btn" class="flex-1 px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700">
+                    Preview Article
+                </button>
+                <button type="submit" id="submit-btn" class="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700">
+                    <span id="submit-text">Submit Article</span>
+                    <span id="submit-loading" class="hidden">Submitting...</span>
+                </button>
+            </div>
         </form>
 
         <!-- Area to display success or error messages from the server -->
         <div id="status-message" class="mt-6 p-4 rounded-lg text-center font-semibold hidden"></div>
+        
+        <!-- Preview Modal -->
+        <div id="preview-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+                <div class="mt-3">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Article Preview</h3>
+                        <button id="close-preview" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="preview-content" class="max-h-96 overflow-y-auto">
+                        <!-- Preview content will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="JS/upload.js"></script>
 </body>

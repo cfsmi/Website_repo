@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = '/upload';
             } else {
                 // If login fails, show an error.
-                errorMessage.classList.remove('hidden');
+                errorMessage.classList.add('show');
             }
         } catch (error) {
             console.error('Login request failed:', error);
